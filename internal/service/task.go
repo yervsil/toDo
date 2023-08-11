@@ -21,24 +21,29 @@ func NewTaskService(repo *repository.Repository) *TaskService {
 	return &TaskService{repo: repo}
 }
 
+// CreateTask создает новую задачу.
 func(t *TaskService) CreateTask(ctx context.Context, task entity.Task) (primitive.ObjectID, error){
 	task.Status = active
 	return t.repo.CreateTask(ctx, task)
 }
 
+// UpdateTask обновляет существующую задачу по ее идентификатору.
 func(t *TaskService) UpdateTask(ctx context.Context, task entity.Task, taskId primitive.ObjectID) error{
 	task.Status = active
 	return t.repo.UpdateTask(ctx, task, taskId)
 }
 
+// DeleteTask удаляет задачу по ее идентификатору.
 func(t *TaskService) DeleteTask(ctx context.Context, taskId primitive.ObjectID) error{
 	return t.repo.DeleteTask(ctx, taskId)
 }
 
+// StatusUpdate обновляет статус задачи по ее идентификатору.
 func(t *TaskService) StatusUpdate(ctx context.Context, taskId primitive.ObjectID) error{
 	return t.repo.StatusUpdate(ctx, taskId)
 }
 
+// GetTasks возвращает список задач с определенным статусом.
 func(t *TaskService) GetTasks(ctx context.Context, status string) ([]entity.Task, error){
 	tasks, err := t.repo.GetTasks(ctx, status)
     if err != nil {

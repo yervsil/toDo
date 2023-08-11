@@ -25,6 +25,7 @@ func NewTaskRepoistory(db *mongo.Database) *taskRepository {
 	return &taskRepository{db: db.Collection(tasksCollection)}
 }
 
+// CreateTask создает новую задачу в базе данных.
 func (r *taskRepository) CreateTask(ctx context.Context, task entity.Task) (primitive.ObjectID, error){
 	if isDuplicate(task, r.db){
 		return primitive.ObjectID{}, errors.New("this document already exists")
@@ -34,6 +35,7 @@ func (r *taskRepository) CreateTask(ctx context.Context, task entity.Task) (prim
 	return res.InsertedID.(primitive.ObjectID), err
 }
 
+// UpdateTask обновляет существующую задачу в базе данных по ее идентификатору.
 func (r *taskRepository) UpdateTask(ctx context.Context, task entity.Task, taskId primitive.ObjectID) error{
 	filter := bson.M{"_id": taskId}
 	res, err := r.db.ReplaceOne(context.Background(), filter, task)
@@ -44,6 +46,7 @@ func (r *taskRepository) UpdateTask(ctx context.Context, task entity.Task, taskI
 	return err
 }
 
+// DeleteTask удаляет задачу из базы данных по ее идентификатору.
 func (r *taskRepository) DeleteTask(ctx context.Context, taskId primitive.ObjectID) error{
 	filter := bson.M{"_id": taskId}
 	res, err := r.db.DeleteOne(context.Background(), filter)
@@ -54,6 +57,7 @@ func (r *taskRepository) DeleteTask(ctx context.Context, taskId primitive.Object
 	return err
 }
 
+// StatusUpdate обновляет статус задачи в базе данных по ее идентификатору.
 func (r *taskRepository) StatusUpdate(ctx context.Context, taskId primitive.ObjectID) error{
 	update := bson.M{"$set": bson.M{"status": done}}
 
@@ -67,6 +71,7 @@ func (r *taskRepository) StatusUpdate(ctx context.Context, taskId primitive.Obje
 	return err
 }
 
+// GetTasks возвращает список задач с определенным статусом.
 func (r *taskRepository) GetTasks(ctx context.Context, status string) ([]entity.Task, error){
 	var filter primitive.M
 
@@ -103,6 +108,7 @@ func (r *taskRepository) GetTasks(ctx context.Context, status string) ([]entity.
 	return tasks, nil
 }
 
+// isDuplicate проверяет, существует ли уже такая задача в базе данных.
 func isDuplicate(task entity.Task, collection *mongo.Collection) bool {
 	filter := bson.M{
 		"title":     task.Title,

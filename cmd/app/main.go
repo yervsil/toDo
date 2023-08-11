@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"time"
+	//"time"
 
 	"github.com/yervsil/toDo-microservice/config"
 	handler "github.com/yervsil/toDo-microservice/internal/delivery/http"
@@ -22,7 +22,7 @@ import (
 
 func main() {
 	cfg, err := config.InitConfig()
-	time.Sleep(5 * time.Minute)
+	//time.Sleep(5 * time.Minute)
 	if err != nil {
 		log.Fatalf("Config error: %s", err)
 	}

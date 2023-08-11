@@ -19,6 +19,8 @@ import (
 // @Failure 400 {object} response
 // @Failure 404 {object} response
 // @Router /api/todo-list/tasks [post]
+
+// Создать задачу
 func (h *Handler) createTask(c *gin.Context) {
 	var input entity.Task
 
@@ -61,6 +63,8 @@ func (h *Handler) createTask(c *gin.Context) {
 // @Failure 400 {object} response
 // @Failure 404 {object} response
 // @Router /api/todo-list/tasks/{int} [put]
+
+// Заменить задачу по id
 func (h *Handler) updateTask(c *gin.Context) {
 	taskId, err := parseIdFromPath(c, "id")
 	if err != nil {
@@ -108,6 +112,8 @@ func (h *Handler) updateTask(c *gin.Context) {
 // @Failure 400 {object} response
 // @Failure 404 {object} response
 // @Router /api/todo-list/tasks/{id} [delete]
+
+// Удалить задачу по id
 func (h *Handler) deleteTask(c *gin.Context) {
 	taskId, err := parseIdFromPath(c, "id")
 	if err != nil {
@@ -136,6 +142,8 @@ func (h *Handler) deleteTask(c *gin.Context) {
 // @Failure 400 {object} response
 // @Failure 404 {object} response
 // @Router /api/todo-list/tasks/{id}/done [patch]
+
+// Обновить статус задачи на выполнено по id
 func (h *Handler) statusUpdate(c *gin.Context) {
 	taskId, err := parseIdFromPath(c, "id")
 	if err != nil {
@@ -165,6 +173,8 @@ func (h *Handler) statusUpdate(c *gin.Context) {
 // @Failure 400 {object} response
 // @Failure 404 {object} response
 // @Router /api/todo-list/tasks [get]
+
+// Получить все задачи взависимости от статуса
 func (h *Handler) getTasks(c *gin.Context) {
 	status := c.DefaultQuery("status", "active")
 
