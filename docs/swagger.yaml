@@ -1,0 +1,176 @@
+basePath: /
+definitions:
+  entity.Task:
+    properties:
+      activeAt:
+        type: string
+      status:
+        type: string
+      title:
+        maxLength: 200
+        type: string
+    required:
+    - activeAt
+    - title
+    type: object
+  handler.response:
+    properties:
+      error:
+        example: message
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: API Server for TodoList Application
+  title: Todo App API
+  version: "1.0"
+paths:
+  /api/todo-list/tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of todo items
+      parameters:
+      - description: 'Status filter: active or done'
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of todo items
+          schema:
+            items:
+              $ref: '#/definitions/entity.Task'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Get todo items
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: Create a new todo item
+      parameters:
+      - description: Task information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: integer
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Create todo item
+      tags:
+      - tasks
+  /api/todo-list/tasks/{id}:
+    delete:
+      description: Delete an existing todo item
+      operationId: delete-task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "201":
+          description: Successfully deleted
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Delete todo item
+      tags:
+      - tasks
+  /api/todo-list/tasks/{id}/done:
+    patch:
+      description: Update status of an existing todo item
+      operationId: update-status
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "201":
+          description: Status has been changed
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Update status of todo item
+      tags:
+      - tasks
+  /api/todo-list/tasks/{int}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing todo item
+      operationId: update-task
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated task information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Task'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully updated
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      summary: Update todo item
+      tags:
+      - tasks
+swagger: "2.0"

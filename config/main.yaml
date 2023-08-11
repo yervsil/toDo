@@ -1,0 +1,12 @@
+env: "local"
+
+http:
+  port: 8000
+  maxHeaderBytes: 1
+  readTimeout: 10s
+  writeTimeout: 10s
+
+db:
+  databaseName: toDo
+  MONGO_URI: mongodb://localhost:27018
+  MONGO_USER: admin
